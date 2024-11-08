@@ -1,3 +1,5 @@
+import http.server
+import socketserver
 import webbrowser
 
 import ee
@@ -22,7 +24,14 @@ visualization = {
 dataset = ee.Image("DLR/WSF/WSF2015/v1")  # type: ignore
 Map.addLayer(ee_object=dataset, vis_params=visualization, name="Human settlement areas")
 
-# save html
+# html
 output_file = "map_export.html"
 Map.save(output_file)
-webbrowser.open(output_file)
+webbrowser.open(f"http://localhost:8000/{output_file}")
+# Serve the HTML file in browser
+PORT = 8000
+Handler = http.server.SimpleHTTPRequestHandler
+
+with socketserver.TCPServer(("", PORT), Handler) as httpd:
+    print(f"Serving at http://localhost:{PORT}")
+    httpd.serve_forever()
