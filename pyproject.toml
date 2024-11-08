@@ -1,0 +1,11 @@
+[project]
+name = "junction-25" 
+dynamic = ["version"]
+description = "Junction 2025"
+readme = "README.md"  
+requires-python = ">=3.10"
+
+dependencies = [
+    "geemap",
+    "earthengine-api"
+]
