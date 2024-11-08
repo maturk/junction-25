@@ -1,13 +1,18 @@
 import ee
-import geemap.core as geemap
+import geemap
 import time
+import webbrowser
 
 ee.Authenticate()
 ee.Initialize(project='ee-matiasturkulainen')
 
-# Initialize a map object.
 Map = geemap.Map(center=(40, -100), zoom=4)
-Map.show()
+
+Map.add_basemap('SATELLITE')
+
+output_file = 'map_export.html'
+Map.save(output_file)
+
+webbrowser.open(output_file)
 
 
-time.sleep(10000)
