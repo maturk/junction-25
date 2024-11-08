@@ -9,7 +9,7 @@ ee.Authenticate()
 ee.Initialize(project="ee-matiasturkulainen")
 
 # basemap
-Map = geemap.Map(center=(40, -100), zoom=4)
+Map = geemap.Map(center=(60.25, 24.85), zoom=10)
 Map.add_basemap("SATELLITE")
 
 # overlay
