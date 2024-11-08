@@ -22,7 +22,22 @@ visualization = {
     max: 1,
 }
 dataset = ee.Image("DLR/WSF/WSF2015/v1")  # type: ignore
-Map.addLayer(ee_object=dataset, vis_params=visualization, name="Human settlement areas")
+ds2 = ee.ImageCollection("CSP/HM/GlobalHumanModification").median()  # Global Human Modification dataset
+
+#Map.addLayer(ee_object=dataset, vis_params=visualization, name="Human settlement areas")
+
+
+visualization = {
+    'min': 0.0,
+    'max': 1.0,
+    'palette': ['0c0c0c', '071aff', 'ff0000', 'ffbd03', 'fbff05', 'fffdfd']
+}
+
+dot_product = dataset.multiply(ds2)
+
+Map.addLayer(ee_object=dot_product, vis_params=visualization, name="Human settlement areas")
+
+
 
 # html
 output_file = "map_export.html"
