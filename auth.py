@@ -21,10 +21,26 @@ visualization = {
     min: 0,
     max: 1,
 }
-dataset = ee.Image("DLR/WSF/WSF2015/v1")  # type: ignore
-ds2 = ee.ImageCollection("CSP/HM/GlobalHumanModification").median()  # Global Human Modification dataset
+dataset = ee.ImageCollection('CSP/HM/GlobalHumanModification').select("gHM").mean()
+ds2 = ee.ImageCollection("ESA/WorldCover/v200").select("Map").mean()
 
-#Map.addLayer(ee_object=dataset, vis_params=visualization, name="Human settlement areas")
+
+def reduceRes(img):
+    img = img.setDefaultProjection(
+        crs='EPSG:4326',  # Use the WGS84 coordinate system
+        scale=10000  # Set an appropriate scale in meters
+    )
+
+    return img.reduceResolution(
+        reducer= ee.Reducer.mean(),
+        bestEffort=True
+    ).reproject(
+        crs= img.projection(),
+        scale= 10000  # in meters
+    )
+
+dataset = reduceRes(dataset)
+Map.addLayer(ee_object=dataset, vis_params=visualization, name="resolution reduced gHM")
 
 
 visualization = {
@@ -33,9 +49,10 @@ visualization = {
     'palette': ['0c0c0c', '071aff', 'ff0000', 'ffbd03', 'fbff05', 'fffdfd']
 }
 
-dot_product = dataset.multiply(ds2)
+# dot_product = dataset.multiply(ee.Image(1).subtract(so2))
+# dot_product = dataset.multiply(ds2)
 
-Map.addLayer(ee_object=dot_product, vis_params=visualization, name="Human settlement areas")
+# Map.addLayer(ee_object=dot_product, vis_params=visualization, name="SO2 penaliced")
 
 
 
