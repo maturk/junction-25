@@ -32,5 +32,4 @@ def reduceRes(img, newScale): #reduce the resolution of data (img) to a meter ba
         scale= newScale  # in meters
     )
 
-def 
 
