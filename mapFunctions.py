@@ -1,10 +1,31 @@
 import ee
 import geemap
 
+# Doesn't contain visParams, yet...
+# Note that e.g. 'Human Settlement' greatly overlaps with 'Built Area' as the prior has a band for buildings...
+datasetList = [
+    ("ee.ImageCollection(\"NASA/FLDAS/NOAH01/C/GL/M/V001\")", "Famine Early Warning"),
+    ("ee.ImageCollection(\"IDAHO_EPSCOR/TERRACLIMATE\")", "Climate and Climatic Water Balance for Global Terrestrial Surfaces"),
+    ("ee.ImageCollection(\"CSIC/SPEI/2_9\")", "Drought index"),
+    ("ee.ImageCollection(\"CIESIN/GPWv411/GPW_Basic_Demographic_Characteristics\")", "Demographic Characteristics"),
+    ("ee.ImageCollection(\"JRC/GHSL/P2023A/GHS_POP\")", "Population Surfaces"),
+    ("ee.ImageCollection(\"COPERNICUS/S5P/NRTI/L3_SO2\")", "SO2"),
+    ("ee.ImageCollection(\"COPERNICUS/S5P/NRTI/L3_HCHO\")", "CH2O"),
+    ("ee.ImageCollection(\"COPERNICUS/S5P/NRTI/L3_CO\")", "CO"),
+    ("ee.ImageCollection(\"COPERNICUS/S5P/OFFL/L3_CH4\")", "CH4"),
+    ("ee.Image(\"UMD/hansen/global_forest_change_2023_v1_11\")", "Forest Change"),
+    ("ee.ImageCollection(\"CSP/HM/GlobalHumanModification\")", "Human Modification"),
+    ("ee.Image(\"DLR/WSF/WSF2015/v1\")", "World Settlement Footprint"),
+    ("ee.ImageCollection(\"BNU/FGS/CCNL/v1\")", "Nighttime Light"),
+    ("ee.ImageCollection(\"ESA/WorldCover/v200\")", "Built Area"),
+    ("ee.ImageCollection(\"JRC/GHSL/P2023A/GHS_BUILT_H\")", "Building Height"),
+    ("ee.ImageCollection(\"JRC/GHSL/P2023A/GHS_BUILT_C\")", "Human Settlement"),
+    ("ee.ImageCollection(\"JRC/GHSL/P2023A/GHS_SMOD_V2-0\")", "Degree of Urbanization"),
+    ("ee.ImageCollection(\"MODIS/061/MCD15A3H\")", "Leaf Area"),
+    ("ee.Image(\"CSP/ERGo/1_0/Global/ALOS_topoDiversity\")", "Biodiversity")
+    ]
+
 #Helper functions
-
-
-
 
 def normalize(image, min:int, max:int): #normalize a single image of data (1 img) to between 0 and 1 of the values are continuous
     normalized_image = image.subtract(min).divide(max - min)
@@ -23,8 +44,6 @@ def getMap(dataset:str):
 
     return dataset.mean()
 
-
-
 def reduceRes(img, newScale): #reduce the resolution of data (img) to a meter based scale
     img = img.setDefaultProjection(
         crs='EPSG:4326',  # Use the WGS84 coordinate system
@@ -39,12 +58,10 @@ def reduceRes(img, newScale): #reduce the resolution of data (img) to a meter ba
         scale= newScale  # in meters
     )
 
-
-
 def combineMaps(imgs):
     defWeight = 1/len(imgs)
     res = ee.Image(0)
     for i in imgs:
         res = res.add(i.multiply(defWeight))
     return res
-
+    
