@@ -14,8 +14,15 @@ def normalize(image, min:int, max:int): #normalize a single image of data (1 img
 #Map functions
 
 def getMap(dataset:str):
-    dataset =ee.ImageCollection(dataset).filterDate('2000-01-01', '2024-12-31') #This needs to be changed as we cannot average all years.
+    dataset =ee.ImageCollection(dataset).filterDate('2016-04-01') #This needs to be changed as we cannot average all years.
+    image = dataset.mean()
+    
+    # Check if the image has any bands
+    if image.bandNames().size().getInfo() == 0:
+        raise ValueError("The dataset does not contain any bands.")
+
     return dataset.mean()
+
 
 
 def reduceRes(img, newScale): #reduce the resolution of data (img) to a meter based scale
@@ -32,4 +39,12 @@ def reduceRes(img, newScale): #reduce the resolution of data (img) to a meter ba
         scale= newScale  # in meters
     )
 
+
+
+def combineMaps(imgs):
+    defWeight = 1/len(imgs)
+    res = ee.Image(0)
+    for i in imgs:
+        res = res.add(i.multiply(defWeight))
+    return res
 

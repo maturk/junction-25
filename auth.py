@@ -5,6 +5,8 @@ import webbrowser
 import ee
 import geemap
 
+import mapFunctions
+
 ee.Authenticate()
 ee.Initialize(project="ee-matiasturkulainen")
 
@@ -21,26 +23,17 @@ visualization = {
     min: 0,
     max: 1,
 }
-dataset = ee.ImageCollection('CSP/HM/GlobalHumanModification').select("gHM").mean()
-ds2 = ee.ImageCollection("ESA/WorldCover/v200").select("Map").mean()
+# ds2 = ee.ImageCollection("ESA/WorldCover/v200").select("Map").mean()
 
+dataset = ee.ImageCollection("CSP/HM/GlobalHumanModification").mean().select("gHM")
 
-def reduceRes(img):
-    img = img.setDefaultProjection(
-        crs='EPSG:4326',  # Use the WGS84 coordinate system
-        scale=10000  # Set an appropriate scale in meters
-    )
-
-    return img.reduceResolution(
-        reducer= ee.Reducer.mean(),
-        bestEffort=True
-    ).reproject(
-        crs= img.projection(),
-        scale= 10000  # in meters
-    )
-
-dataset = reduceRes(dataset)
+dataset = mapFunctions.reduceRes(dataset, 10000)
 Map.addLayer(ee_object=dataset, vis_params=visualization, name="resolution reduced gHM")
+
+ds2 = ee.ImageCollection("COPERNICUS/S5P/NRTI/L3_CO").mean().select("CO_column_number_density")
+ds2 = mapFunctions.normalize(ds2,-279, 4.64)
+ds2 = mapFunctions.reduceRes(ds2, 10000)
+ds2 = ee.Image(1).subtract(ds2)
 
 
 visualization = {
@@ -52,7 +45,7 @@ visualization = {
 # dot_product = dataset.multiply(ee.Image(1).subtract(so2))
 # dot_product = dataset.multiply(ds2)
 
-# Map.addLayer(ee_object=dot_product, vis_params=visualization, name="SO2 penaliced")
+Map.addLayer(ee_object=mapFunctions.combineMaps([dataset,ds2]), vis_params=visualization, name="Combined")
 
 
 
