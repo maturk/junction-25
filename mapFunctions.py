@@ -27,23 +27,20 @@ def getMap(dataset, change=None):
 
 
 datasetList = [
-    (normalize(getMap(ee.ImageCollection("NASA/FLDAS/NOAH01/C/GL/M/V001")), 0.0, 0.00005), "Famine Early Warning", 'famine'),
-    (normalize(getMap(ee.ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")), -300.0, 300.0), "Climate and Climatic Water Balance for Global Terrestrial Surfaces", 'waterBalance'),
-    (normalize(getMap(ee.ImageCollection("CSIC/SPEI/2_9")), -2.33, 2.33), "Drought index", 'drought'),
-    (normalize(getMap(ee.ImageCollection("CIESIN/GPWv411/GPW_Basic_Demographic_Characteristics")), 0, 1), "Demographic Characteristics", 'demographic'),
-    (normalize(getMap(ee.ImageCollection("JRC/GHSL/P2023A/GHS_POP")), 0.0, 100.0), "Population Surfaces", 'population'),
-    (normalize(getMap(ee.ImageCollection("COPERNICUS/S5P/NRTI/L3_SO2")), 0.0, 0.0005), "SO2", 'SO2'),
-    (normalize(getMap(ee.ImageCollection("COPERNICUS/S5P/NRTI/L3_HCHO").select('tropospheric_HCHO_column_number_density')), -0.02, 0.001), "CH2O", 'CH2O'),
-    (normalize(getMap(ee.ImageCollection("COPERNICUS/S5P/NRTI/L3_CO")), 0, 0.05), "CO", 'CO'),
-    (normalize(getMap(ee.ImageCollection("COPERNICUS/S5P/OFFL/L3_CH4")), 1750, 1900), "CH4", 'CH4'),
-    (normalize(getMap(ee.ImageCollection("CSP/HM/GlobalHumanModification")), 0.0, 1.0), "Human Modification", 'HumanMod'),
-    (normalize(getMap(ee.ImageCollection("BNU/FGS/CCNL/v1")), 3.0, 60.0), "Nighttime Light", 'nightTime'),
-    (normalize(getMap(ee.ImageCollection("JRC/GHSL/P2023A/GHS_BUILT_H")), 0.0, 12.0), "Building Height", 'buildHeight'),
-    (normalize(getMap(ee.ImageCollection("MODIS/061/MCD15A3H")), 0.0, 100.0), "Leaf Area", 'leafArea')
+    (normalize(getMap(ee.ImageCollection("NASA/FLDAS/NOAH01/C/GL/M/V001").select('Evap_tavg')), 0.0, 0.00005), "Famine Early Warning", 'famine'),
+    (normalize(getMap(ee.ImageCollection("IDAHO_EPSCOR/TERRACLIMATE").select('pdsi')), -1000.0, 1000.0), "Climate and Climatic Water Balance for Global Terrestrial Surfaces", 'waterBalance'),
+    (normalize(getMap(ee.ImageCollection("CSIC/SPEI/2_9").select("SPEI_12_month")), -2.33, 2.33), "Drought index", 'drought'),
+    (normalize(getMap(ee.ImageCollection("CIESIN/GPWv411/GPW_Basic_Demographic_Characteristics").select('basic_demographic_characteristics')), 0, 1), "Demographic Characteristics", 'demographic'),
+    (normalize(getMap(ee.ImageCollection("JRC/GHSL/P2023A/GHS_POP").select('population_count')), 0.0, 100.0), "Population Surfaces", 'population'),
+    (normalize(getMap(ee.ImageCollection("COPERNICUS/S5P/OFFL/L3_SO2").select('SO2_column_number_density')), 0.0, 0.0005), "SO2", 'SO2'),
+    (normalize(getMap(ee.ImageCollection("COPERNICUS/S5P/OFFL/L3_HCHO").select('tropospheric_HCHO_column_number_density')), -0.02, 0.001), "CH2O", 'CH2O'),
+    (normalize(getMap(ee.ImageCollection("COPERNICUS/S5P/OFFL/L3_CO").select('CO_column_number_density')), 0, 0.05), "CO", 'CO'),
+    (normalize(getMap(ee.ImageCollection("COPERNICUS/S5P/OFFL/L3_CH4").select('CH4_column_volume_mixing_ratio_dry_air')), 1750, 1900), "CH4", 'CH4'),
+    (normalize(getMap(ee.ImageCollection("CSP/HM/GlobalHumanModification").select('gHM')), 0.0, 1.0), "Human Modification", 'HumanMod'),
+    (normalize(getMap(ee.ImageCollection("BNU/FGS/CCNL/v1").select('b1')), 3.0, 60.0), "Nighttime Light", 'nightTime'),
+    (normalize(getMap(ee.ImageCollection("JRC/GHSL/P2023A/GHS_BUILT_H").select('built_height')), 0.0, 12.0), "Building Height", 'buildHeight'),
+    (normalize(getMap(ee.ImageCollection("MODIS/061/MCD15A3H").select('Fpar')), 0.0, 100.0), "Leaf Area", 'leafArea')
 ]
-
-#Helper functions
-
 
 
 #Map functions
