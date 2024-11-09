@@ -1,7 +1,9 @@
-Data: \vspace{0.5cm}
+Data:
+
 $X_1, X_2, ..., X_n$
 
-Normalised: \vspace{0.5cm}
+Normalised: 
+
 $X'_1, X'_2, ..., X'_n$
 
 General Sustainability Index\texttrademark  (GSI):
