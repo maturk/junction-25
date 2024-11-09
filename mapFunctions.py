@@ -42,6 +42,14 @@ datasetList = [
     (normalize(getMap(ee.ImageCollection("MODIS/061/MCD15A3H").select('Fpar')), 0.0, 100.0), "Leaf Area", 'leafArea')
 ]
 
+# lambda_i should be \lamda_i = 1 EXCEPT for these critical cases:
+# famine 3
+# drought 3
+# HumanMod 2
+# BioDiversity 0.5
+
+weights = [3, 1, 3, 1, 1, 1, 1, 1, 1, 2, 1, 0.5, 1]
+
 
 #Map functions
 
