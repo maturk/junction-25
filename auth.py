@@ -43,6 +43,9 @@ visualization = {
     'palette': ['0c0c0c', '071aff', 'ff0000', 'ffbd03', 'fbff05', 'fffdfd']
 }
 
+for ds in mapFunctions.datasetList:
+    Map.addLayer(ds[0],visualization,ds[1],True,opacity)
+
 
 # html
 output_file = "map_export.html"
